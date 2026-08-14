@@ -6,20 +6,20 @@
 var R = React.createElement;
 var useState = React.useState, useEffect = React.useEffect, useMemo = React.useMemo, useCallback = React.useCallback, Fragment = React.Fragment;
 
-const C = {
+var C = {
   navy: "#0E2A5E", navy2: "#153E82", blue: "#2F6FE0", skyBlue: "#5FA8E0",
   paleBg: "#F4F7FC", panelBg: "#FFFFFF", ink: "#101826", sub: "#5B6B7F",
   line: "#DCE4F0", white: "#FFFFFF",
   ok: "#1E7B34", okBg: "#E3F5E6", warn: "#9C6500", warnBg: "#FFF3D6",
   bad: "#B00020", badBg: "#FDE3E3",
 };
-const FONT_DISPLAY = "'Segoe UI Semibold', 'Segoe UI', Arial, sans-serif";
-const FONT_BODY = "'Segoe UI', Arial, sans-serif";
-const FONT_MONO = "'Consolas', 'Courier New', monospace";
+var FONT_DISPLAY = "'Segoe UI Semibold', 'Segoe UI', Arial, sans-serif";
+var FONT_BODY = "'Segoe UI', Arial, sans-serif";
+var FONT_MONO = "'Consolas', 'Courier New', monospace";
 
-const supabaseUrl = 'https://fxhakwigygyjspljrjob.supabase.co';
-const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZ4aGFrd2lneWd5anNwbGpyam9iIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQyMTQ5NzYsImV4cCI6MjA5OTc5MDk3Nn0.5WUUUBgw78EawfBVgUd1idrkWT_imbsRBgr-MWdJg';
-let supabase = null;
+var supabaseUrl = 'https://fxhakwigygyjspljrjob.supabase.co';
+var supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZ4aGFrd2lneWd5anNwbGpyam9iIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQyMTQ5NzYsImV4cCI6MjA5OTc5MDk3Nn0.5WUUUBgw78EawfBVgUd1idrkWT_imbsRBgr-MWdJg';
+var supabase = null;
 try {
   if (window.supabase && window.supabase.createClient) {
     supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
@@ -28,27 +28,27 @@ try {
   console.warn('Supabase init skipped:', e);
 }
 
-const CLOUD_SYNC_BASE = 'https://kvdb.io/DPYMS_v2_DanishPharm_2026_Prod';
+var CLOUD_SYNC_BASE = 'https://kvdb.io/DPYMS_v2_DanishPharm_2026_Prod';
 
-const DEFAULT_LOGO = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 460 120' width='460' height='120'><rect width='100%' height='100%' fill='none'/><circle cx='50' cy='60' r='36' fill='%230E2A5E' stroke='%232F6FE0' stroke-width='3'/><path d='M50 32 V88 M36 46 H64 M36 74 H64' stroke='%235FA8E0' stroke-width='4' stroke-linecap='round'/><circle cx='50' cy='60' r='10' fill='%23FFFFFF'/><text x='100' y='55' font-family='Segoe UI,Arial,sans-serif' font-weight='800' font-size='28' fill='%230E2A5E'>DANISH</text><text x='100' y='82' font-family='Segoe UI,Arial,sans-serif' font-weight='600' font-size='16' fill='%232F6FE0'>HEALTH CARE (P) LTD.</text></svg>";
-const DEFAULT_TAB  = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 300'><rect width='300' height='300' rx='20' fill='%230E2A5E'/><rect x='40' y='40' width='220' height='220' rx='16' fill='%23FFFFFF' stroke='%235FA8E0' stroke-width='3'/><circle cx='90' cy='90' r='28' fill='%232F6FE0'/><circle cx='150' cy='90' r='28' fill='%232F6FE0'/><circle cx='210' cy='90' r='28' fill='%232F6FE0'/><circle cx='90' cy='150' r='28' fill='%232F6FE0'/><circle cx='150' cy='150' r='28' fill='%232F6FE0'/><circle cx='210' cy='150' r='28' fill='%232F6FE0'/><circle cx='90' cy='210' r='28' fill='%232F6FE0'/><circle cx='150' cy='210' r='28' fill='%232F6FE0'/><circle cx='210' cy='210' r='28' fill='%232F6FE0'/><text x='150' y='275' font-family='Segoe UI,Arial,sans-serif' font-weight='700' font-size='14' fill='%23FFFFFF' text-anchor='middle'>TABLETS</text></svg>";
-const DEFAULT_CAP  = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 300'><rect width='300' height='300' rx='20' fill='%23153E82'/><rect x='40' y='40' width='220' height='220' rx='16' fill='%23F4F7FC' stroke='%232F6FE0' stroke-width='3'/><text x='150' y='165' font-family='Segoe UI,Arial,sans-serif' font-weight='700' font-size='14' fill='%23FFFFFF' text-anchor='middle'>CAPSULES</text></svg>";
-const DEFAULT_ORS  = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 300'><rect width='300' height='300' rx='20' fill='%230E2A5E'/><text x='150' y='165' font-family='Segoe UI,Arial,sans-serif' font-weight='700' font-size='14' fill='%23FFFFFF' text-anchor='middle'>ORS SACHETS</text></svg>";
-const DEFAULT_OINT = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 300'><rect width='300' height='300' rx='20' fill='%23153E82'/><text x='150' y='165' font-family='Segoe UI,Arial,sans-serif' font-weight='700' font-size='14' fill='%23FFFFFF' text-anchor='middle'>OINTMENT</text></svg>";
+var DEFAULT_LOGO = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 460 120' width='460' height='120'><rect width='100%' height='100%' fill='none'/><circle cx='50' cy='60' r='36' fill='%230E2A5E' stroke='%232F6FE0' stroke-width='3'/><path d='M50 32 V88 M36 46 H64 M36 74 H64' stroke='%235FA8E0' stroke-width='4' stroke-linecap='round'/><circle cx='50' cy='60' r='10' fill='%23FFFFFF'/><text x='100' y='55' font-family='Segoe UI,Arial,sans-serif' font-weight='800' font-size='28' fill='%230E2A5E'>DANISH</text><text x='100' y='82' font-family='Segoe UI,Arial,sans-serif' font-weight='600' font-size='16' fill='%232F6FE0'>HEALTH CARE (P) LTD.</text></svg>";
+var DEFAULT_TAB  = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 300'><rect width='300' height='300' rx='20' fill='%230E2A5E'/><rect x='40' y='40' width='220' height='220' rx='16' fill='%23FFFFFF' stroke='%235FA8E0' stroke-width='3'/><circle cx='90' cy='90' r='28' fill='%232F6FE0'/><circle cx='150' cy='90' r='28' fill='%232F6FE0'/><circle cx='210' cy='90' r='28' fill='%232F6FE0'/><circle cx='90' cy='150' r='28' fill='%232F6FE0'/><circle cx='150' cy='150' r='28' fill='%232F6FE0'/><circle cx='210' cy='150' r='28' fill='%232F6FE0'/><circle cx='90' cy='210' r='28' fill='%232F6FE0'/><circle cx='150' cy='210' r='28' fill='%232F6FE0'/><circle cx='210' cy='210' r='28' fill='%232F6FE0'/><text x='150' y='275' font-family='Segoe UI,Arial,sans-serif' font-weight='700' font-size='14' fill='%23FFFFFF' text-anchor='middle'>TABLETS</text></svg>";
+var DEFAULT_CAP  = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 300'><rect width='300' height='300' rx='20' fill='%23153E82'/><rect x='40' y='40' width='220' height='220' rx='16' fill='%23F4F7FC' stroke='%232F6FE0' stroke-width='3'/><text x='150' y='165' font-family='Segoe UI,Arial,sans-serif' font-weight='700' font-size='14' fill='%23FFFFFF' text-anchor='middle'>CAPSULES</text></svg>";
+var DEFAULT_ORS  = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 300'><rect width='300' height='300' rx='20' fill='%230E2A5E'/><text x='150' y='165' font-family='Segoe UI,Arial,sans-serif' font-weight='700' font-size='14' fill='%23FFFFFF' text-anchor='middle'>ORS SACHETS</text></svg>";
+var DEFAULT_OINT = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 300'><rect width='300' height='300' rx='20' fill='%23153E82'/><text x='150' y='165' font-family='Segoe UI,Arial,sans-serif' font-weight='700' font-size='14' fill='%23FFFFFF' text-anchor='middle'>OINTMENT</text></svg>";
 
-const BRAND_LOGO = window.LOGO_B64 || 'danish_logo.jpg';
-const IMG_TAB    = window.TAB_B64  || 'tablet_product.jpg';
-const IMG_CAP    = window.CAP_B64  || 'capsule_product.jpg';
-const IMG_ORS    = window.ORS_B64  || 'ors_product.jpg';
-const IMG_OINT   = window.OINT_B64 || 'ointment_product.jpg';
+var BRAND_LOGO = window.LOGO_B64 || 'danish_logo.jpg';
+var IMG_TAB    = window.TAB_B64  || 'tablet_product.jpg';
+var IMG_CAP    = window.CAP_B64  || 'capsule_product.jpg';
+var IMG_ORS    = window.ORS_B64  || 'ors_product.jpg';
+var IMG_OINT   = window.OINT_B64 || 'ointment_product.jpg';
 
 // ---------- Sample Data ----------
-const SAMPLE_MOTHER_BATCHES = [
+var SAMPLE_MOTHER_BATCHES = [
   { id:"MB-TB-002", dept:"tablet", date:"2026-07-24", genericName:"Aceclofenac (100 mg) and Paracetamol (325 mg) Tablets", productGroup:"ALDONIX / ACLONAC GROUP", avgUnitWt:"630", plannedLakhUnits:"10.00", plannedBatchWt:"630.0", rrGran:"0", granOutput:"627.0", compOutput:"626.4", coated:"Y", coreAvgWt:"630", coatWtGainPct:"1.5", actualCoatedWt:"639.45", coatOutput:"635.8", remarks:"Progressive yield verified.", loggedBy:"Production/QA Officer", qaStatus:"QA Approved" },
   { id:"MB-CP-001", dept:"capsule", date:"2026-07-23", genericName:"OMEPRAZOLE CAPSULES BP 20 MG", productGroup:"OMEDAN GROUP", avgUnitWt:"326", fillWtMg:"250", shellWtMg:"76", plannedLakhUnits:"5.00", plannedBatchWt:"125.0", granOutput:"124.2", compOutput:"123.8", remarks:"Fill weight within BP spec.", loggedBy:"Production/QA Officer", qaStatus:"QA Approved" },
   { id:"MB-OR-001", dept:"ors", date:"2026-07-22", genericName:"ORS POWDER (WHO FORMULA)", productGroup:"DANISH ORS SACHETS", plannedQty:"250000", mixOutputKg:"5250", fillOutputQty:"248500", remarks:"Moisture 0.8%, Electrolyte verified.", loggedBy:"Production/QA Officer", qaStatus:"QA Approved" }
 ];
-const SAMPLE_COMMERCIAL_BATCHES = [
+var SAMPLE_COMMERCIAL_BATCHES = [
   { id:"CB-TB-001", dept:"tablet", mbId:"MB-TB-002", date:"2026-07-24", productName:"ALDONIX-P", batchNumber:"LPX26001", unitsReceived:"400000", packedQty:"397600", dispatchQty:"396000", rejectedUnits:"1600", rrGeneratedUnits:"800", loggedBy:"Packaging Officer" },
   { id:"CB-TB-002", dept:"tablet", mbId:"MB-TB-002", date:"2026-07-24", productName:"ACLONAC-P", batchNumber:"APC26003", unitsReceived:"600000", packedQty:"597600", dispatchQty:"595200", rejectedUnits:"1800", rrGeneratedUnits:"600", loggedBy:"Packaging Officer" },
   { id:"CB-CP-001", dept:"capsule", mbId:"MB-CP-001", date:"2026-07-25", productName:"OMEDAN 20 CAPSULES", batchNumber:"CMA26001", unitsReceived:"500000", packedQty:"497000", dispatchQty:"496000", rejectedUnits:"2000", rrGeneratedUnits:"1000", loggedBy:"Packaging Officer" }
@@ -76,20 +76,20 @@ async function hashPassword(pwd) {
   const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(pwd));
   return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2,'0')).join('');
 }
-const ROLE_PASSWORDS = { production:'production123', qa:'qa123', packaging:'packaging123', manager:'manager123' };
-const ROLE_HASHES = {
+var ROLE_PASSWORDS = { production:'production123', qa:'qa123', packaging:'packaging123', manager:'manager123' };
+var ROLE_HASHES = {
   production:'97f08b12c985e818cb86cd3d6f7c4dec65a586d95874ce54db426d20d383ab2a',
   qa:'c1b474e2d4e78873f848037146522c069b14798b0451cfbf5894101e4a193631',
   packaging:'e97af628deabddcc642d00c9b0fa3c488e54fe9bbe557975e5f45e5c9f04ea82',
   manager:'240be518fabd2724ddb6f04eeb1da5967448d7e831c08c8fa822809f74c720a9'
 };
-const DEPARTMENTS = {
+var DEPARTMENTS = {
   tablet:   { key:"tablet",   label:"Tablets",  unit:"Lakh Tabs",    icon:"💊", imgSrc:IMG_TAB,  stages:["gran","comp","coat"] },
   capsule:  { key:"capsule",  label:"Capsules", unit:"Lakh Caps",    icon:"⬤", imgSrc:IMG_CAP,  stages:["gran","comp"] },
   ors:      { key:"ors",      label:"ORS",      unit:"Lakh Sachets", icon:"🥤", imgSrc:IMG_ORS,  stages:["mix","fill"] },
   ointment: { key:"ointment", label:"Ointment", unit:"Lakh Tubes",   icon:"🧴", imgSrc:IMG_OINT, stages:["mix","fill"] },
 };
-const DEPT_LIST = Object.values(DEPARTMENTS);
+var DEPT_LIST = Object.values(DEPARTMENTS);
 
 // ---------- Cloud Persistence ----------
 async function loadShared(key, fallback) {
@@ -147,7 +147,7 @@ function downloadCSV(filename, csv) {
 }
 
 // ---------- Math ----------
-const round2 = n => (isFinite(n) && n !== "" && n !== null ? Math.round(n*100)/100 : "");
+var round2 = n => (isFinite(n) && n !== "" && n !== null ? Math.round(n*100)/100 : "");
 function lakhUnitsFromKg(kg, mg) { if (!kg || !mg) return ""; return round2((kg*1000000)/mg/100000); }
 function pct(num, den) { if (!num && num !== 0) return ""; if (!den) return ""; return round2((num/den)*100); }
 function lakhFromUnits(u) { if (!u && u !== 0) return ""; return round2(u/100000); }
@@ -218,10 +218,10 @@ function computeCB(cb, mbs) {
   return { mb:mbs.find(m=>m.id===cb.mbId), unitsRecv, recvLakh:lakhFromUnits(unitsRecv), packed, packedLakh:lakhFromUnits(packed), dispatch, dispatchLakh:lakhFromUnits(dispatch), rejected, rrGen, rrGenLakh:lakhFromUnits(rrGen), effectiveLossUnits:Math.max(0,unitsRecv-(packed+rrGen)), pkgYield, dispatchYield, finalYield };
 }
 
-const DEPT_PREFIX = { tablet:"TB", capsule:"CP", ors:"OR", ointment:"OT" };
-const genMBId = (existing, dept) => { const p = "MB-"+DEPT_PREFIX[dept], nums = existing.filter(m=>m.dept===dept).map(m=>parseInt((m.id||"").split("-").pop(),10)).filter(n=>!isNaN(n)); return p+"-"+String((nums.length?Math.max(...nums):0)+1).padStart(3,"0"); };
-const genCBId = (existing, dept) => { const p = "CB-"+DEPT_PREFIX[dept], nums = existing.filter(c=>c.dept===dept).map(c=>parseInt((c.id||"").split("-").pop(),10)).filter(n=>!isNaN(n)); return p+"-"+String((nums.length?Math.max(...nums):0)+1).padStart(3,"0"); };
-const sortNewestFirst = arr => [...arr].sort((a,b)=>{ const da=new Date(a.date||0).getTime(),db=new Date(b.date||0).getTime(); return db!==da?db-da:(b.createdAt||0)-(a.createdAt||0); });
+var DEPT_PREFIX = { tablet:"TB", capsule:"CP", ors:"OR", ointment:"OT" };
+var genMBId = (existing, dept) => { const p = "MB-"+DEPT_PREFIX[dept], nums = existing.filter(m=>m.dept===dept).map(m=>parseInt((m.id||"").split("-").pop(),10)).filter(n=>!isNaN(n)); return p+"-"+String((nums.length?Math.max(...nums):0)+1).padStart(3,"0"); };
+var genCBId = (existing, dept) => { const p = "CB-"+DEPT_PREFIX[dept], nums = existing.filter(c=>c.dept===dept).map(c=>parseInt((c.id||"").split("-").pop(),10)).filter(n=>!isNaN(n)); return p+"-"+String((nums.length?Math.max(...nums):0)+1).padStart(3,"0"); };
+var sortNewestFirst = arr => [...arr].sort((a,b)=>{ const da=new Date(a.date||0).getTime(),db=new Date(b.date||0).getTime(); return db!==da?db-da:(b.createdAt||0)-(a.createdAt||0); });
 function fmtDate(d) { if (!d) return "—"; try { return new Date(d).toLocaleDateString("en-IN",{day:"2-digit",month:"short",year:"numeric"}); } catch(e){return d;} }
 function fmtNum(n) { if (n===""||n===undefined||n===null) return "—"; return Number(n).toLocaleString("en-IN"); }
 
@@ -243,7 +243,7 @@ function deptImgOnError(key){
 }
 
 // ====== UI COMPONENTS ======
-const inputStyle = { width:"100%", padding:"11px 12px", fontSize:15, border:"1.5px solid "+C.line, borderRadius:9, outline:"none", fontFamily:FONT_BODY, color:C.ink, background:C.white, boxSizing:"border-box" };
+var inputStyle = { width:"100%", padding:"11px 12px", fontSize:15, border:"1.5px solid "+C.line, borderRadius:9, outline:"none", fontFamily:FONT_BODY, color:C.ink, background:C.white, boxSizing:"border-box" };
 
 function TextInput(props) {
   return R('input', Object.assign({}, props, { style: Object.assign({}, inputStyle, props.style||{}) }));
