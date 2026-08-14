@@ -1,3 +1,5 @@
+var R = React.createElement;
+var useState = React.useState, useEffect = React.useEffect, useMemo = React.useMemo, useCallback = React.useCallback, Fragment = React.Fragment;
 
 // ====== ERROR BOUNDARY ======
 class ErrorBoundary extends React.Component {
