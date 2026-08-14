@@ -98,7 +98,7 @@ async function loadShared(key, fallback) {
   try { const r = localStorage.getItem(key); if (r) { const p = JSON.parse(r); if (Array.isArray(p)) localData = p; } } catch(e) {}
   let cloudData = [];
   try {
-    const res = await fetch(supabaseUrl+'/rest/v1/'+cloudKey+'?select=*&limit=5000&order=created_at.desc', { headers:{'apikey':supabaseKey,'Authorization':'Bearer '+supabaseKey} });
+    const res = await fetch(supabaseUrl+'/rest/v1/'+cloudKey+'?select=*&limit=5000&order=created_at.desc', { headers:{'apikey':supabaseKey} });
     if (res.ok) { const d = await res.json(); if (Array.isArray(d) && d.length) cloudData = d.map(toCamelCase); }
   } catch(e) { console.warn("Supabase fetch warning:", e); }
   try {
@@ -118,7 +118,7 @@ async function saveShared(key, value) {
   const cloudKey = key === 'dpyms_mother_batches' ? 'mother_batches' : 'commercial_batches';
   try { localStorage.setItem(key, JSON.stringify(value)); } catch(e) {}
   try {
-    await fetch(supabaseUrl+'/rest/v1/'+cloudKey, { method:'POST', headers:{'apikey':supabaseKey,'Authorization':'Bearer '+supabaseKey,'Content-Type':'application/json','Prefer':'resolution=merge-duplicates'}, body:JSON.stringify(value.map(toSnakeCase)) });
+    await fetch(supabaseUrl+'/rest/v1/'+cloudKey, { method:'POST', headers:{'apikey':supabaseKey,'Content-Type':'application/json','Prefer':'resolution=merge-duplicates'}, body:JSON.stringify(value.map(toSnakeCase)) });
   } catch(e) {}
   try { await fetch(CLOUD_SYNC_BASE+'/'+cloudKey, { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(value) }); } catch(e) {}
   return { ok:true };
