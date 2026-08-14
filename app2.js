@@ -30,7 +30,7 @@ function PackagingScreen(props) {
     splitRows.forEach(function(r,i){ init[i]=Object.assign({},detailBlank); });
     setDetails(init); setShowSplitSetup(false);
   }
-  function setDetail(i,k){ return function(e){ setDetails(function(prev){ return Object.assign({},prev,{[i]:Object.assign({},prev[i],{[k]:e.target.value})}); }); }
+  function setDetail(i,k){ return function(e){ setDetails(function(prev){ return Object.assign({},prev,{[i]:Object.assign({},prev[i],{[k]:e.target.value})}); }); } }
   const saveAll = async function() {
     if (!mbId){ setToast("Select a Mother Batch first"); return; }
     const requestedTotal = splitRows.reduce(function(sum,_,i){ return sum+(parseFloat(details[i]?details[i].unitsReceived:null)||0); }, 0);
@@ -410,5 +410,4 @@ function App() {
     role==="packaging" ? R(PackagingScreen, { dept:dept, userName:userName, setUserName:setUserName, motherBatches:motherBatches, commercialBatches:commercialBatches, setCommercialBatches:setCommercialBatches }) : null,
     R('div', { style:{ textAlign:"center", padding:"18px 16px 30px", fontSize:11, color:C.sub }, className:"no-print" }, "Danish Health Care (P) Ltd. · 76/27-29, Industrial Estate, Maxi Road, Ujjain 456010 · ISO 9001:2015 & WHO GMP Certified")
   );
-}
 }
