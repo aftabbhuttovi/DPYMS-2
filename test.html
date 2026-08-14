@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html><body>
+<pre id="out"></pre>
+<script>
+window.onerror = function(m,s,l,c,err) {
+  document.getElementById("out").textContent = m + " | line " + l + " | col " + c;
+};
+</script>
+<script src="app1.js"></script>
+<script>
+if (!document.getElementById("out").textContent) {
+  document.getElementById("out").textContent = "No error in app1.js!";
+}
+</script>
+</body></html>
