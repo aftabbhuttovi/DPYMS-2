@@ -6,7 +6,7 @@
   <title>DPYMS v2 - Danish Health Care (P) Ltd.</title>
   <link rel="stylesheet" href="style.css" />
 
-  <!-- React 18 — NO BABEL NEEDED, app.js is pure JavaScript -->
+  <!-- React 18 — NO BABEL NEEDED, pure JavaScript -->
   <script src="https://cdn.jsdelivr.net/npm/react@18.2.0/umd/react.production.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/react-dom@18.2.0/umd/react-dom.production.min.js"></script>
 
@@ -15,7 +15,7 @@
 </head>
 <body>
 
-  <!-- Loading screen — replaced by React once app.js runs -->
+  <!-- Loading screen — replaced by React once scripts run -->
   <div id="root">
     <div style="min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;background:#0E2A5E;color:#fff;font-family:'Segoe UI',Arial,sans-serif;text-align:center;padding:24px;">
       <div style="width:60px;height:60px;border:4px solid rgba(255,255,255,0.2);border-top:4px solid #5FA8E0;border-radius:50%;animation:spin 1s linear infinite;margin-bottom:24px;"></div>
@@ -30,12 +30,17 @@
     // Show error on screen if any script fails
     window.addEventListener('error', function(e) {
       var el = document.getElementById('load-status');
-      if (el) { el.style.color='#F87171'; el.innerHTML='❌ Error: '+e.message+' (line '+e.lineno+')'; }
+      if (el) {
+        el.style.color = '#F87171';
+        el.innerHTML = '❌ Error: ' + e.message + ' (line ' + e.lineno + ')';
+      }
     });
   </script>
 
-  <!-- Pure JavaScript — no Babel, no compilation, runs directly in browser -->
-  <script src="app.js"></script>
+  <!-- App split into 3 files to avoid upload size limits — all pure JavaScript, no Babel -->
+  <script src="app1.js"></script>
+  <script src="app2.js"></script>
+  <script src="app3.js"></script>
 
 </body>
 </html>
