@@ -17,8 +17,8 @@ var FONT_DISPLAY = "'Segoe UI Semibold', 'Segoe UI', Arial, sans-serif";
 var FONT_BODY = "'Segoe UI', Arial, sans-serif";
 var FONT_MONO = "'Consolas', 'Courier New', monospace";
 
-var supabaseUrl = 'https://fxhakwigygyjspljrjob.supabase.co';
-var supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZ4aGFrd2lneWd5anNwbGpyam9iIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQyMTQ5NzYsImV4cCI6MjA5OTc5MDk3Nn0.5WUUUBgw78EawfBVgUd1idrkWT_imbsRBgr-MWdJg';
+var supabaseUrl = 'https://jkwgyxzlalurbmbchanc.supabase.co';
+var supabaseKey = 'sb_publishable_9XDW3gGrlrJJXKm4KjkLwQ_bwJp8U_G';
 var supabase = null;
 try {
   if (window.supabase && window.supabase.createClient) {
