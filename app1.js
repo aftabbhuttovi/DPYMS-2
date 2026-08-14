@@ -3,8 +3,8 @@
    Pure JavaScript (NO JSX, NO BABEL NEEDED)
    React.createElement used throughout. Works on all browsers directly.
 ============================================================================ */
-const R = React.createElement;
-const { useState, useEffect, useMemo, useCallback, Fragment } = React;
+var R = React.createElement;
+var useState = React.useState, useEffect = React.useEffect, useMemo = React.useMemo, useCallback = React.useCallback, Fragment = React.Fragment;
 
 const C = {
   navy: "#0E2A5E", navy2: "#153E82", blue: "#2F6FE0", skyBlue: "#5FA8E0",
