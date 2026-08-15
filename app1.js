@@ -28,7 +28,14 @@ try {
   console.warn('Supabase init skipped:', e);
 }
 
-var CLOUD_SYNC_BASE = 'https://kvdb.io/DPYMS_v2_DanishPharm_2026_Prod';
+var FORCE_WIPE_VERSION = "1.0.1";
+if (localStorage.getItem("WIPE_VERSION") !== FORCE_WIPE_VERSION) {
+  localStorage.removeItem("dpyms_mother_batches");
+  localStorage.removeItem("dpyms_commercial_batches");
+  localStorage.setItem("WIPE_VERSION", FORCE_WIPE_VERSION);
+  console.log("Forced a clean wipe of all local databases.");
+}
+var CLOUD_SYNC_BASE = 'https://kvdb.io/T3qa26b3zE9vGCsGw2F8nU';
 
 var DEFAULT_LOGO = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 460 120' width='460' height='120'><rect width='100%' height='100%' fill='none'/><circle cx='50' cy='60' r='36' fill='%230E2A5E' stroke='%232F6FE0' stroke-width='3'/><path d='M50 32 V88 M36 46 H64 M36 74 H64' stroke='%235FA8E0' stroke-width='4' stroke-linecap='round'/><circle cx='50' cy='60' r='10' fill='%23FFFFFF'/><text x='100' y='55' font-family='Segoe UI,Arial,sans-serif' font-weight='800' font-size='28' fill='%230E2A5E'>DANISH</text><text x='100' y='82' font-family='Segoe UI,Arial,sans-serif' font-weight='600' font-size='16' fill='%232F6FE0'>HEALTH CARE (P) LTD.</text></svg>";
 var DEFAULT_TAB  = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 300'><rect width='300' height='300' rx='20' fill='%230E2A5E'/><rect x='40' y='40' width='220' height='220' rx='16' fill='%23FFFFFF' stroke='%235FA8E0' stroke-width='3'/><circle cx='90' cy='90' r='28' fill='%232F6FE0'/><circle cx='150' cy='90' r='28' fill='%232F6FE0'/><circle cx='210' cy='90' r='28' fill='%232F6FE0'/><circle cx='90' cy='150' r='28' fill='%232F6FE0'/><circle cx='150' cy='150' r='28' fill='%232F6FE0'/><circle cx='210' cy='150' r='28' fill='%232F6FE0'/><circle cx='90' cy='210' r='28' fill='%232F6FE0'/><circle cx='150' cy='210' r='28' fill='%232F6FE0'/><circle cx='210' cy='210' r='28' fill='%232F6FE0'/><text x='150' y='275' font-family='Segoe UI,Arial,sans-serif' font-weight='700' font-size='14' fill='%23FFFFFF' text-anchor='middle'>TABLETS</text></svg>";
@@ -649,6 +656,7 @@ function QaScreen(props) {
     toast ? R(Toast, { message:toast, onDone:function(){ setToast(""); } }) : null
   );
 }
+
 
 
 
