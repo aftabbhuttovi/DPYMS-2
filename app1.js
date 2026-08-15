@@ -447,7 +447,7 @@ function ProductionScreen(props) {
   const d = (dept && DEPARTMENTS[dept]) || { label:"Plant-Wide", unit:"Units", imgSrc:DEFAULT_LOGO };
   const isTablet = dept==="tablet", isCapsule=dept==="capsule", isOrsOintment=dept==="ors"||dept==="ointment";
   const [viewAllDepts, setViewAllDepts] = useState(false);
-  const deptBatches = viewAllDepts ? motherBatches : motherBatches.filter(function(m){ return m.dept===dept; });
+  const deptBatches = (viewAllDepts ? motherBatches : motherBatches.filter(function(m){ return m.dept===dept; })).filter(function(m){ return m.qaStatus!=='DELETED'; });
   const blank = { id:"", dept, date:new Date().toISOString().slice(0,10), genericName:"", productGroup:"", avgUnitWt:"", plannedLakhUnits:"", plannedBatchWt:"", rrGran:"0", granOutput:"", compOutput:"", compRR:"0", coated:"N", coreAvgWt:"", coatWtGainPct:"", actualCoatedWt:"", coatOutput:"", fillWtMg:"", shellWtMg:"", plannedQty:"", mixOutputKg:"", fillOutputQty:"", remarks:"", loggedBy:props.userName||"", qaStatus:"Pending" };
   const [form, setForm] = useState(blank);
   const [editingId, setEditingId] = useState(null);
@@ -638,4 +638,6 @@ function QaScreen(props) {
     toast ? R(Toast, { message:toast, onDone:function(){ setToast(""); } }) : null
   );
 }
+
+
 
