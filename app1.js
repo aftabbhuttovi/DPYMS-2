@@ -1,4 +1,4 @@
-/* ============================================================================
+﻿/* ============================================================================
    DANISH HEALTH CARE (P) LTD. � DPYMS v2
    Pure JavaScript (NO JSX, NO BABEL NEEDED)
    React.createElement used throughout. Works on all browsers directly.
@@ -421,20 +421,24 @@ function DepartmentPicker(props) {
 
 // ====== TOP BAR ======
 function TopBar(props) {
-  return R('div', { style:{ background:C.navy, color:C.white, padding:"10px 20px", display:"flex", alignItems:"center", justifyContent:"space-between", position:"sticky", top:0, zIndex:20, boxShadow:"0 2px 8px rgba(0,0,0,0.15)", flexWrap:"wrap", gap:8 }, className:"no-print" },
-    R('div', { style:{ display:"flex", alignItems:"center", gap:12 } },
-      R('img', { src:BRAND_LOGO, onError:function(e){e.target.onerror=null;e.target.src=DEFAULT_LOGO;}, alt:"Logo", style:{ height:32, borderRadius:4 } }),
-      R('div', null,
-        R('div', { style:{ fontWeight:700, fontSize:13.5, fontFamily:FONT_DISPLAY, display:"flex", alignItems:"center", gap:8 } },
-          "DPYMS v2 � Danish Healthcare",
-          R('span', { style:{ fontSize:10, background:props.isSyncing?C.warnBg:C.okBg, color:props.isSyncing?C.warn:C.ok, padding:"2px 8px", borderRadius:999, fontWeight:700 } }, props.isSyncing?"?? Syncing...":"? Multi-Device Live")
-        ),
-        R('div', { style:{ fontSize:10, color:C.skyBlue, letterSpacing:0.5 } }, props.roleLabel+(props.deptLabel?" � "+props.deptLabel:"")+(props.userName?" � "+props.userName:""))
-      )
-    ),
-    R('div', { style:{ display:"flex", gap:8, flexWrap:"wrap" } },
-      R('button', { onClick:props.onForcePush, title:"Push all batches to Cloud", style:{ background:C.okBg, border:"1px solid "+C.ok, color:C.ok, borderRadius:8, padding:"6px 12px", fontSize:12, cursor:"pointer", fontWeight:700 } }, "?? Push Data to Cloud"),
-      R('button', { onClick:props.onManualSync, title:"Fetch latest from Cloud", style:{ background:"rgba(255,255,255,0.2)", border:"1px solid rgba(255,255,255,0.35)", color:C.white, borderRadius:8, padding:"6px 12px", fontSize:12, cursor:"pointer", fontWeight:700 } }, "?? Sync Cloud Data"),
+    return R('div', { style:{ background:C.navy, color:C.white, padding:"10px 20px", display:"flex", 
+alignItems:"center", justifyContent:"space-between", position:"sticky", top:0, zIndex:20, boxShadow:"0 2px 8px 
+rgba(0,0,0,0.15)", flexWrap:"wrap", gap:8 }, className:"no-print" },
+      R('div', { style:{ display:"flex", alignItems:"center", gap:12 } },
+        R('img', { src:BRAND_LOGO, onError:function(e){e.target.onerror=null;e.target.src=DEFAULT_LOGO;}, alt:"Logo", 
+style:{ height:32, borderRadius:4 } }),
+        R('div', null,
+          R('div', { style:{ fontWeight:700, fontSize:13.5, fontFamily:FONT_DISPLAY, display:"flex", 
+alignItems:"center", gap:8 } },
+            "DPYMS v2 \u2014 Danish Healthcare",
+            R('span', { style:{ fontSize:10, background:props.isSyncing?C.warnBg:C.okBg, 
+color:props.isSyncing?C.warn:C.ok, padding:"2px 8px", borderRadius:999, fontWeight:700 } }, props.isSyncing?"\u21BB 
+Syncing...":"\u2713 Multi-Device Live")
+          ),
+          R('div', { style:{ fontSize:10, color:C.skyBlue, letterSpacing:0.5 } }, props.roleLabel+(props.deptLabel?" \u2014 "+props.deptLabel:"")+(props.userName?" \u2014 "+props.userName:""))
+        )
+      ),
+      R('div', { style:{ display:"flex", gap:8, flexWrap:"wrap" } },
       props.showDeptChange ? R('button', { onClick:props.onChangeDept, style:{ background:"rgba(255,255,255,0.12)", border:"1px solid rgba(255,255,255,0.28)", color:C.white, borderRadius:8, padding:"6px 12px", fontSize:12, cursor:"pointer" } }, "? Change Department") : null,
       R('button', { onClick:props.onSwitchRole, style:{ background:"rgba(255,255,255,0.12)", border:"1px solid rgba(255,255,255,0.28)", color:C.white, borderRadius:8, padding:"6px 12px", fontSize:12, cursor:"pointer" } }, "? Switch Role")
     )
@@ -637,6 +641,8 @@ function QaScreen(props) {
     toast ? R(Toast, { message:toast, onDone:function(){ setToast(""); } }) : null
   );
 }
+
+
 
 
 
