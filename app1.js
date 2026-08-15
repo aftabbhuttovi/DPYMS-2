@@ -84,10 +84,10 @@ var ROLE_HASHES = {
   manager:'240be518fabd2724ddb6f04eeb1da5967448d7e831c08c8fa822809f74c720a9'
 };
 var DEPARTMENTS = {
-  tablet:   { key:"tablet",   label:"Tablets",  unit:"Lakh Tabs",    icon:"💊", imgSrc:IMG_TAB,  stages:["gran","comp","coat"] },
-  capsule:  { key:"capsule",  label:"Capsules", unit:"Lakh Caps",    icon:"⬤", imgSrc:IMG_CAP,  stages:["gran","comp"] },
-  ors:      { key:"ors",      label:"ORS",      unit:"Lakh Sachets", icon:"🥤", imgSrc:IMG_ORS,  stages:["mix","fill"] },
-  ointment: { key:"ointment", label:"Ointment", unit:"Lakh Tubes",   icon:"🧴", imgSrc:IMG_OINT, stages:["mix","fill"] },
+  tablet:   { key:"tablet",   label:"Tablets",  unit:"Lakh Tabs",    icon:"??", imgSrc:IMG_TAB,  stages:["gran","comp","coat"] },
+  capsule:  { key:"capsule",  label:"Capsules", unit:"Lakh Caps",    icon:"?", imgSrc:IMG_CAP,  stages:["gran","comp"] },
+  ors:      { key:"ors",      label:"ORS",      unit:"Lakh Sachets", icon:"??", imgSrc:IMG_ORS,  stages:["mix","fill"] },
+  ointment: { key:"ointment", label:"Ointment", unit:"Lakh Tubes",   icon:"??", imgSrc:IMG_OINT, stages:["mix","fill"] },
 };
 var DEPT_LIST = Object.values(DEPARTMENTS);
 
@@ -285,7 +285,7 @@ function Stat(props) {
 function Toast(props) {
   useEffect(function(){ const t = setTimeout(props.onDone, 2400); return function(){ clearTimeout(t); }; }, [props.onDone]);
   return R('div', { style:{ position:"fixed", bottom:24, left:"50%", transform:"translateX(-50%)", background:C.navy, color:C.white, padding:"12px 22px", borderRadius:999, fontSize:13.5, boxShadow:"0 6px 20px rgba(0,0,0,0.25)", zIndex:100, display:"flex", alignItems:"center", gap:8, maxWidth:"90vw", textAlign:"center" } },
-    R('span', { style:{ color:C.skyBlue } }, "✓"), " ", props.message
+    R('span', { style:{ color:C.skyBlue } }, "?"), " ", props.message
   );
 }
 function StatusPill(props) {
@@ -330,21 +330,21 @@ function BrandHeader(props) {
 function UniversalActionBar(props) {
   const isEditing = props.isEditing || false;
   return R('div', { className:"nav-action-bar no-print" },
-    props.onBack ? R('button', { type:"button", className:"btn-nav btn-back", onClick:props.onBack }, "← Back") : null,
-    !isEditing && props.onSave ? R('button', { type:"button", className:"btn-nav btn-save", onClick:props.onSave }, "💾 Save") : null,
-    !isEditing && props.onEdit ? R('button', { type:"button", className:"btn-nav btn-edit", onClick:props.onEdit }, "✏️ Edit") : null,
-    isEditing && props.onUpdate ? R('button', { type:"button", className:"btn-nav btn-update", onClick:props.onUpdate }, "🔄 Update Record") : null,
-    props.onDelete ? R('button', { type:"button", className:"btn-nav btn-delete", onClick:props.onDelete }, "🗑️ Delete Batch") : null
+    props.onBack ? R('button', { type:"button", className:"btn-nav btn-back", onClick:props.onBack }, "? Back") : null,
+    !isEditing && props.onSave ? R('button', { type:"button", className:"btn-nav btn-save", onClick:props.onSave }, "?? Save") : null,
+    !isEditing && props.onEdit ? R('button', { type:"button", className:"btn-nav btn-edit", onClick:props.onEdit }, "?? Edit") : null,
+    isEditing && props.onUpdate ? R('button', { type:"button", className:"btn-nav btn-update", onClick:props.onUpdate }, "?? Update Record") : null,
+    props.onDelete ? R('button', { type:"button", className:"btn-nav btn-delete", onClick:props.onDelete }, "??? Delete Batch") : null
   );
 }
 
 // ====== ROLE PICKER ======
 function RolePicker(props) {
   const roles = [
-    { key:"production", label:"Production", desc:"Log & Edit Mother Batches — Granulation, Compression, Coating", icon:"⚗" },
-    { key:"qa", label:"Quality Assurance (QA)", desc:"Inspection, Assay, QC Approvals & Status Updates", icon:"🔬" },
-    { key:"packaging", label:"Packaging", desc:"Commercial Batches — Packing, Rejections, Dispatch & Yields", icon:"📦" },
-    { key:"manager", label:"Manager Dashboard", desc:"Full plant view — unified stage tracking & GMP reports", icon:"◈" },
+    { key:"production", label:"Production", desc:"Log & Edit Mother Batches — Granulation, Compression, Coating", icon:"?" },
+    { key:"qa", label:"Quality Assurance (QA)", desc:"Inspection, Assay, QC Approvals & Status Updates", icon:"??" },
+    { key:"packaging", label:"Packaging", desc:"Commercial Batches — Packing, Rejections, Dispatch & Yields", icon:"??" },
+    { key:"manager", label:"Manager Dashboard", desc:"Full plant view — unified stage tracking & GMP reports", icon:"?" },
   ];
   const [selectedRole, setSelectedRole] = useState(null);
   const [password, setPassword] = useState("");
@@ -372,7 +372,7 @@ function RolePicker(props) {
           errorMsg ? R('div', { style:{ color:C.bad, fontSize:12.5, marginBottom:14, fontWeight:600 } }, errorMsg) : null,
           R('div', { style:{ display:"flex", gap:10 } },
             R('button', { type:"button", onClick:function(){ setSelectedRole(null); setErrorMsg(""); setPassword(""); }, style:{ flex:1, padding:"12px", borderRadius:8, background:C.white, border:"1px solid "+C.line, color:C.sub, cursor:"pointer", fontWeight:"bold" } }, "Back"),
-            R('button', { type:"submit", style:{ flex:1, padding:"12px", borderRadius:8, background:C.navy, color:C.white, border:"none", cursor:"pointer", fontWeight:"bold" } }, "Login →")
+            R('button', { type:"submit", style:{ flex:1, padding:"12px", borderRadius:8, background:C.navy, color:C.white, border:"none", cursor:"pointer", fontWeight:"bold" } }, "Login ?")
           )
         )
       )
@@ -415,7 +415,7 @@ function DepartmentPicker(props) {
         );
       })
     ),
-    R('button', { onClick:props.onBack, style:{ background:"none", border:"none", color:C.sub, fontSize:12.5, marginTop:28, cursor:"pointer", fontWeight:600 } }, "← Back to Roles")
+    R('button', { onClick:props.onBack, style:{ background:"none", border:"none", color:C.sub, fontSize:12.5, marginTop:28, cursor:"pointer", fontWeight:600 } }, "? Back to Roles")
   );
 }
 
@@ -427,16 +427,16 @@ function TopBar(props) {
       R('div', null,
         R('div', { style:{ fontWeight:700, fontSize:13.5, fontFamily:FONT_DISPLAY, display:"flex", alignItems:"center", gap:8 } },
           "DPYMS v2 · Danish Healthcare",
-          R('span', { style:{ fontSize:10, background:props.isSyncing?C.warnBg:C.okBg, color:props.isSyncing?C.warn:C.ok, padding:"2px 8px", borderRadius:999, fontWeight:700 } }, props.isSyncing?"🔄 Syncing...":"● Multi-Device Live")
+          R('span', { style:{ fontSize:10, background:props.isSyncing?C.warnBg:C.okBg, color:props.isSyncing?C.warn:C.ok, padding:"2px 8px", borderRadius:999, fontWeight:700 } }, props.isSyncing?"?? Syncing...":"? Multi-Device Live")
         ),
         R('div', { style:{ fontSize:10, color:C.skyBlue, letterSpacing:0.5 } }, props.roleLabel+(props.deptLabel?" · "+props.deptLabel:"")+(props.userName?" · "+props.userName:""))
       )
     ),
     R('div', { style:{ display:"flex", gap:8, flexWrap:"wrap" } },
-      R('button', { onClick:props.onForcePush, title:"Push all batches to Cloud", style:{ background:C.okBg, border:"1px solid "+C.ok, color:C.ok, borderRadius:8, padding:"6px 12px", fontSize:12, cursor:"pointer", fontWeight:700 } }, "☁️ Push Data to Cloud"),
-      R('button', { onClick:props.onManualSync, title:"Fetch latest from Cloud", style:{ background:"rgba(255,255,255,0.2)", border:"1px solid rgba(255,255,255,0.35)", color:C.white, borderRadius:8, padding:"6px 12px", fontSize:12, cursor:"pointer", fontWeight:700 } }, "🔄 Sync Cloud Data"),
-      props.showDeptChange ? R('button', { onClick:props.onChangeDept, style:{ background:"rgba(255,255,255,0.12)", border:"1px solid rgba(255,255,255,0.28)", color:C.white, borderRadius:8, padding:"6px 12px", fontSize:12, cursor:"pointer" } }, "← Change Department") : null,
-      R('button', { onClick:props.onSwitchRole, style:{ background:"rgba(255,255,255,0.12)", border:"1px solid rgba(255,255,255,0.28)", color:C.white, borderRadius:8, padding:"6px 12px", fontSize:12, cursor:"pointer" } }, "← Switch Role")
+      R('button', { onClick:props.onForcePush, title:"Push all batches to Cloud", style:{ background:C.okBg, border:"1px solid "+C.ok, color:C.ok, borderRadius:8, padding:"6px 12px", fontSize:12, cursor:"pointer", fontWeight:700 } }, "?? Push Data to Cloud"),
+      R('button', { onClick:props.onManualSync, title:"Fetch latest from Cloud", style:{ background:"rgba(255,255,255,0.2)", border:"1px solid rgba(255,255,255,0.35)", color:C.white, borderRadius:8, padding:"6px 12px", fontSize:12, cursor:"pointer", fontWeight:700 } }, "?? Sync Cloud Data"),
+      props.showDeptChange ? R('button', { onClick:props.onChangeDept, style:{ background:"rgba(255,255,255,0.12)", border:"1px solid rgba(255,255,255,0.28)", color:C.white, borderRadius:8, padding:"6px 12px", fontSize:12, cursor:"pointer" } }, "? Change Department") : null,
+      R('button', { onClick:props.onSwitchRole, style:{ background:"rgba(255,255,255,0.12)", border:"1px solid rgba(255,255,255,0.28)", color:C.white, borderRadius:8, padding:"6px 12px", fontSize:12, cursor:"pointer" } }, "? Switch Role")
     )
   );
 }
@@ -492,8 +492,8 @@ function ProductionScreen(props) {
     R(UniversalActionBar, { onSave:function(){ saveRecord(false); }, onEdit:editingId?null:function(){ if(deptBatches[0]) editBatch(deptBatches[0]); }, onUpdate:function(){ saveRecord(true); }, onDelete:editingId?function(){ deleteBatch(editingId); }:null, onBack:function(){ setForm(blank); setEditingId(null); }, isEditing:!!editingId }),
     R(Card, { style:{ padding:22, marginBottom:24 } },
       editingId ? R('div', { style:{ background:C.warnBg, color:C.warn, padding:"8px 14px", borderRadius:8, fontSize:12.5, fontWeight:700, marginBottom:16, display:"flex", justifyContent:"space-between", alignItems:"center" } },
-        R('span', null, "✏️ Editing Active Batch: "+editingId),
-        R('button', { type:"button", className:"btn-nav btn-delete", style:{ padding:"4px 8px", fontSize:11 }, onClick:function(){ deleteBatch(editingId); } }, "🗑️ Delete Batch")
+        R('span', null, "?? Editing Active Batch: "+editingId),
+        R('button', { type:"button", className:"btn-nav btn-delete", style:{ padding:"4px 8px", fontSize:11 }, onClick:function(){ deleteBatch(editingId); } }, "??? Delete Batch")
       ) : null,
       R('div', { style:{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:14 } },
         R(Field, { label:"Date" }, R(TextInput, { type:"date", value:form.date, onChange:set("date") })),
@@ -555,7 +555,7 @@ function ProductionScreen(props) {
     R(SectionHeading, { title:viewAllDepts?"All Plant Mother Batches ("+motherBatches.length+")":"Recent "+d.label+" Mother Batches ("+deptBatches.length+")", small:true }),
     R('div', { style:{ display:"flex", gap:10, marginBottom:14 } },
       R(FilterChip, { active:!viewAllDepts, onClick:function(){ setViewAllDepts(false); }, label:"Current Section ("+d.label+")" }),
-      R(FilterChip, { active:viewAllDepts, onClick:function(){ setViewAllDepts(true); }, label:"🌐 View All Plant Lines ("+motherBatches.length+" Batches)" })
+      R(FilterChip, { active:viewAllDepts, onClick:function(){ setViewAllDepts(true); }, label:"?? View All Plant Lines ("+motherBatches.length+" Batches)" })
     ),
     R('div', { style:{ display:"flex", flexDirection:"column", gap:12 } },
       deptBatches.map(function(mb) {
@@ -568,8 +568,8 @@ function ProductionScreen(props) {
             ),
             R('div', { style:{ display:"flex", alignItems:"center", gap:8 } },
               R(StatusPill, { status:mb.qaStatus||"Pending" }),
-              R('button', { type:"button", className:"btn-nav btn-edit", style:{ padding:"5px 10px", fontSize:12 }, onClick:function(){ editBatch(mb); } }, "✏️ Edit"),
-              R('button', { type:"button", className:"btn-nav btn-delete", style:{ padding:"5px 10px", fontSize:12 }, onClick:function(){ deleteBatch(mb.id); } }, "🗑️ Delete")
+              R('button', { type:"button", className:"btn-nav btn-edit", style:{ padding:"5px 10px", fontSize:12 }, onClick:function(){ editBatch(mb); } }, "?? Edit"),
+              R('button', { type:"button", className:"btn-nav btn-delete", style:{ padding:"5px 10px", fontSize:12 }, onClick:function(){ deleteBatch(mb.id); } }, "??? Delete")
             )
           )
         );
@@ -605,7 +605,7 @@ function QaScreen(props) {
     R(Card, { style:{ padding:20, marginBottom:24 } },
       R('div', { style:{ display:"flex", gap:10, marginBottom:14 } },
         R(FilterChip, { active:!viewAllDepts, onClick:function(){ setViewAllDepts(false); }, label:"Current Section ("+d.label+")" }),
-        R(FilterChip, { active:viewAllDepts, onClick:function(){ setViewAllDepts(true); }, label:"🌐 View All Plant Batches ("+motherBatches.length+")" })
+        R(FilterChip, { active:viewAllDepts, onClick:function(){ setViewAllDepts(true); }, label:"?? View All Plant Batches ("+motherBatches.length+")" })
       ),
       R(Field, { label:"Select Mother Batch for QA Clearance" },
         R(SelectInput, { value:selectedMbId, onChange:function(e){ setSelectedMbId(e.target.value); } },
@@ -638,3 +638,4 @@ function QaScreen(props) {
     toast ? R(Toast, { message:toast, onDone:function(){ setToast(""); } }) : null
   );
 }
+
