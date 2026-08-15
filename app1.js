@@ -475,16 +475,15 @@ function ProductionScreen(props) {
     setForm(Object.assign({}, blank, { date:new Date().toISOString().slice(0,10) }));
   };
   const deleteBatch = async function(mbId) {
-    if (!window.confirm("Are you sure you want to delete Mother Batch "+mbId+"?")) return;
-    const updatedMBs = motherBatches.filter(function(m){ return m.id!==mbId; });
-    const updatedCBs = commercialBatches.filter(function(c){ return c.mbId!==mbId; });
-    props.setMotherBatches(updatedMBs); props.setCommercialBatches(updatedCBs);
-    deleteSharedRow("mother_batches", mbId);
-    await saveShared("dpyms_mother_batches", updatedMBs);
-    await saveShared("dpyms_commercial_batches", updatedCBs);
-    if (form.id===mbId||editingId===mbId){ setForm(blank); setEditingId(null); }
-    setToast("Mother Batch "+mbId+" deleted");
-  };
+      if (!window.confirm("Are you sure you want to delete Mother Batch "+mbId+"?")) return;
+      const updatedMBs = motherBatches.map(function(m){ return m.id===mbId ? Object.assign({},m,{qaStatus:"DELETED"}) : m; });
+      const updatedCBs = commercialBatches.map(function(c){ return c.mbId===mbId ? Object.assign({},c,{batchNumber:"[DELETED] "+(c.batchNumber||"")}) : c; });
+      props.setMotherBatches(updatedMBs); props.setCommercialBatches(updatedCBs);
+      await saveShared("dpyms_mother_batches", updatedMBs);
+      await saveShared("dpyms_commercial_batches", updatedCBs);
+      if (form.id===mbId||editingId===mbId){ setForm(blank); setEditingId(null); }
+      setToast("Mother Batch "+mbId+" deleted");
+    };
   const editBatch = function(mb){ setForm(mb); setEditingId(mb.id); window.scrollTo({top:0,behavior:"smooth"}); };
 
   return R('div', { style:{ maxWidth:820, margin:"0 auto", padding:"20px 16px 60px" } },
@@ -638,6 +637,8 @@ function QaScreen(props) {
     toast ? R(Toast, { message:toast, onDone:function(){ setToast(""); } }) : null
   );
 }
+
+
 
 
 
