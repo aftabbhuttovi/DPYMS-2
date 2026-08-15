@@ -475,7 +475,18 @@ function ProductionScreen(props) {
     setForm(Object.assign({}, blank, { date:new Date().toISOString().slice(0,10) }));
   };
   const deleteBatch = async function(mbId) {
-    if (!window.confirm("Are you sure you want to delete Mother Batch "+mbId+"?")) return;
+    if (!window.confirm("Are you sure you want to permanently delete Mother Batch "+mbId+"?")) return;
+    const mbToDelete = motherBatches.find(function(m){ return m.id === mbId; });
+    if (mbToDelete) {
+      const deletedMB = Object.assign({}, mbToDelete, { qaStatus: "DELETED" });
+      try {
+        await fetch(supabaseUrl+"/rest/v1/mother_batches", {
+          method:"POST", 
+          headers:{"apikey":supabaseKey,"Authorization":"Bearer "+supabaseKey,"Content-Type":"application/json","Prefer":"resolution=merge-duplicates"}, 
+          body:JSON.stringify([toSnakeCase(deletedMB)])
+        });
+      } catch(e) {}
+    }
     const updatedMBs = motherBatches.filter(function(m){ return m.id!==mbId; });
     const updatedCBs = commercialBatches.filter(function(c){ return c.mbId!==mbId; });
     props.setMotherBatches(updatedMBs); props.setCommercialBatches(updatedCBs);
@@ -483,7 +494,7 @@ function ProductionScreen(props) {
     await saveShared("dpyms_mother_batches", updatedMBs);
     await saveShared("dpyms_commercial_batches", updatedCBs);
     if (form.id===mbId||editingId===mbId){ setForm(blank); setEditingId(null); }
-    setToast("Mother Batch "+mbId+" deleted");
+    setToast("Mother Batch "+mbId+" permanently deleted");
   };
   const editBatch = function(mb){ setForm(mb); setEditingId(mb.id); window.scrollTo({top:0,behavior:"smooth"}); };
 
@@ -638,3 +649,6 @@ function QaScreen(props) {
     toast ? R(Toast, { message:toast, onDone:function(){ setToast(""); } }) : null
   );
 }
+
+
+
