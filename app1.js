@@ -17,8 +17,8 @@ var FONT_DISPLAY = "'Segoe UI Semibold', 'Segoe UI', Arial, sans-serif";
 var FONT_BODY = "'Segoe UI', Arial, sans-serif";
 var FONT_MONO = "'Consolas', 'Courier New', monospace";
 
-var supabaseUrl = 'https://fxhakwigygyjspljrjob.supabase.co';
-var supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZ4aGFrd2lneWd5anNwbGpyam9iIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQyMTQ5NzYsImV4cCI6MjA5OTc5MDk3Nn0.5WUUUBgw78EawfBVgUd1idrkWT_imbsRBgr-MWdJg';
+var supabaseUrl = 'https://jkwgyxzlalurbmbchanc.supabase.co';
+var supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imprd2d5eHpsYWx1cmJtYmNoYW5jIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODY3MTExNDksImV4cCI6MjA5MjI4NzE0OX0.XfT55W6_f4D0C_qj_p6p7z_3E4u7P_e7e6f8j0E9i8';
 var supabase = null;
 try {
   if (window.supabase && window.supabase.createClient) {
@@ -649,6 +649,7 @@ function QaScreen(props) {
     toast ? R(Toast, { message:toast, onDone:function(){ setToast(""); } }) : null
   );
 }
+
 
 
 
