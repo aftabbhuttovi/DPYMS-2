@@ -54,7 +54,7 @@ function PackagingScreen(props) {
   const deleteCB = async function(cbId){ if(!window.confirm("Delete Commercial Batch "+cbId+"?"))return; const updatedCBs=commercialBatches.map(function(c){return c.id===cbId?{...c,batchNumber:'[DELETED] '+(c.batchNumber||'')}:c;}); props.setCommercialBatches(updatedCBs); await saveShared("dpyms_commercial_batches",updatedCBs); setToast("Commercial Batch "+cbId+" deleted"); };
   const deptCBs = commercialBatches.filter(function(c){ return c.dept===dept && !(c.batchNumber||'').startsWith('[DELETED]'); });
   return R('div', { style:{ maxWidth:820, margin:"0 auto", padding:"20px 16px 60px" } },
-    R(SectionHeading, { eyebrow:"Packaging · "+d.label, title:"Log Commercial Batches & Packaging Yields", sub:"Track Units Received, Packed, Dispatched & Yields (Syncs live across devices)." }),
+    R(SectionHeading, { eyebrow:"Packaging � "+d.label, title:"Log Commercial Batches & Packaging Yields", sub:"Track Units Received, Packed, Dispatched & Yields (Syncs live across devices)." }),
     R(UniversalActionBar, { onSave:saveAll, onBack:function(){ setShowSplitSetup(true); setEditingCbId(null); } }),
     R(Card, { style:{ padding:20, marginBottom:24 } },
       R('div', { style:{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:14 } },
@@ -63,15 +63,15 @@ function PackagingScreen(props) {
       ),
       R(Field, { label:"Mother Batch ID (Parent Batch)", hint:selectedMB?"Generic: "+selectedMB.genericName+" ("+(selectedMBCalc?selectedMBCalc.plannedLakh:"?")+" Lacs)":"" },
         R(SelectInput, { value:mbId, onChange:function(e){ setMbId(e.target.value); } },
-          deptMBs.map(function(mb){ return R('option', { key:mb.id, value:mb.id }, mb.id+" — "+(mb.genericName||"Untitled")); })
+          deptMBs.map(function(mb){ return R('option', { key:mb.id, value:mb.id }, mb.id+" � "+(mb.genericName||"Untitled")); })
         )
       ),
       showSplitSetup ? R(Fragment, null,
         R(Field, { label:"Number of Brand Splits" }, R(TextInput, { type:"number", min:"1", max:"20", value:splitCount, onChange:function(e){ applySplitCount(e.target.value); } })),
         splitRows.map(function(row,i){
           return R('div', { key:i, style:{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:10, background:C.paleBg, padding:12, borderRadius:10, marginBottom:12 } },
-            R(Field, { label:"Split "+(i+1)+" — Brand Name" }, R(TextInput, { placeholder:"e.g. ALDONIX-P", value:row.productName, onChange:function(e){ setSplitRows(function(prev){ return prev.map(function(r,j){ return j===i?Object.assign({},r,{productName:e.target.value}):r; }); }); } })),
-            R(Field, { label:"Split "+(i+1)+" — Batch Number" }, R(TextInput, { placeholder:"e.g. LPX26001", value:row.batchNumber, onChange:function(e){ setSplitRows(function(prev){ return prev.map(function(r,j){ return j===i?Object.assign({},r,{batchNumber:e.target.value}):r; }); }); } }))
+            R(Field, { label:"Split "+(i+1)+" � Brand Name" }, R(TextInput, { placeholder:"e.g. ALDONIX-P", value:row.productName, onChange:function(e){ setSplitRows(function(prev){ return prev.map(function(r,j){ return j===i?Object.assign({},r,{productName:e.target.value}):r; }); }); } })),
+            R(Field, { label:"Split "+(i+1)+" � Batch Number" }, R(TextInput, { placeholder:"e.g. LPX26001", value:row.batchNumber, onChange:function(e){ setSplitRows(function(prev){ return prev.map(function(r,j){ return j===i?Object.assign({},r,{batchNumber:e.target.value}):r; }); }); } }))
           );
         }),
         R(PrimaryButton, { onClick:startDetailEntry }, "Continue to Yield Entry ?")
@@ -80,7 +80,7 @@ function PackagingScreen(props) {
           const det = details[i]||{};
           return R(Card, { key:i, style:{ padding:16, background:C.paleBg, marginBottom:14 } },
             R('div', { style:{ fontSize:11, fontWeight:700, color:C.blue, textTransform:"uppercase", marginBottom:6 } }, "Belongs to Mother Batch: "+mbId),
-            R('div', { style:{ fontWeight:700, fontSize:14, color:C.navy, marginBottom:12 } }, "Brand Name: "+row.productName, R('span', { style:{ color:C.sub, fontWeight:400 } }, " · Batch #"+row.batchNumber)),
+            R('div', { style:{ fontWeight:700, fontSize:14, color:C.navy, marginBottom:12 } }, "Brand Name: "+row.productName, R('span', { style:{ color:C.sub, fontWeight:400 } }, " � Batch #"+row.batchNumber)),
             R('div', { style:{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:10 } },
               R(Field, { label:"Units Received (Batch Size)" }, R(TextInput, { type:"number", placeholder:"e.g. 400000", value:det.unitsReceived||"", onChange:setDetail(i,"unitsReceived") })),
               R(Field, { label:"Units Packed" }, R(TextInput, { type:"number", placeholder:"e.g. 397600", value:det.packedQty||"", onChange:setDetail(i,"packedQty") }))
@@ -89,7 +89,7 @@ function PackagingScreen(props) {
               R(Field, { label:"Units Dispatched" }, R(TextInput, { type:"number", placeholder:"e.g. 396000", value:det.dispatchQty||"", onChange:setDetail(i,"dispatchQty") })),
               R(Field, { label:"Rejected Units" }, R(TextInput, { type:"number", value:det.rejectedUnits||"0", onChange:setDetail(i,"rejectedUnits") }))
             ),
-            R(Field, { label:"RR Generated / Retained for Future Batches (Units)", hint:"Good loose tablets saved for reuse — NOT counted as loss!" }, R(TextInput, { type:"number", placeholder:"e.g. 800", value:det.rrGeneratedUnits||"0", onChange:setDetail(i,"rrGeneratedUnits") }))
+            R(Field, { label:"RR Generated / Retained for Future Batches (Units)", hint:"Good loose tablets saved for reuse � NOT counted as loss!" }, R(TextInput, { type:"number", placeholder:"e.g. 800", value:det.rrGeneratedUnits||"0", onChange:setDetail(i,"rrGeneratedUnits") }))
           );
         }),
         R('div', { style:{ display:"flex", gap:10 } },
@@ -105,13 +105,13 @@ function PackagingScreen(props) {
         return R(Card, { key:cb.id, style:{ padding:14 } },
           R('div', { style:{ display:"flex", justifyContent:"space-between", alignItems:"center" } },
             R('div', null,
-              R('div', { style:{ fontWeight:700, fontSize:14 } }, cb.id+" · "+cb.productName, R('span', { style:{ color:C.sub } }, " (MB: "+cb.mbId+")")),
-              R('div', { style:{ fontSize:12, color:C.sub, marginTop:2 } }, "Batch #"+cb.batchNumber+" · Recv: "+cb.unitsReceived+" ("+calc.recvLakh+" Lacs) · Packed: "+cb.packedQty+" ("+calc.packedLakh+" Lacs) · RR Retained: ", R('b', null, calc.rrGen+" units"))
+              R('div', { style:{ fontWeight:700, fontSize:14 } }, cb.id+" � "+cb.productName, R('span', { style:{ color:C.sub } }, " (MB: "+cb.mbId+")")),
+              R('div', { style:{ fontSize:12, color:C.sub, marginTop:2 } }, "Batch #"+cb.batchNumber+" � Recv: "+cb.unitsReceived+" ("+calc.recvLakh+" Lacs) � Packed: "+cb.packedQty+" ("+calc.packedLakh+" Lacs) � RR Retained: ", R('b', null, calc.rrGen+" units"))
             ),
             R('div', { style:{ display:"flex", alignItems:"center", gap:8 } },
               R(YieldBadge, { value:calc.pkgYield }),
-              R('button', { type:"button", className:"btn-nav btn-edit", style:{ padding:"4px 8px", fontSize:11 }, onClick:function(){ editCB(cb); } }, "?? Edit"),
-              R('button', { type:"button", className:"btn-nav btn-delete", style:{ padding:"4px 8px", fontSize:11 }, onClick:function(){ deleteCB(cb.id); } }, "??? Delete")
+              R('button', { type:"button", className:"btn-nav btn-edit", style:{ padding:"4px 8px", fontSize:11 }, onClick:function(){ editCB(cb); } }, "✏ Edit"),
+              R('button', { type:"button", className:"btn-nav btn-delete", style:{ padding:"4px 8px", fontSize:11 }, onClick:function(){ deleteCB(cb.id); } }, "🗑 Delete")
             )
           )
         );
@@ -195,7 +195,7 @@ function ManagerScreen(props) {
               R('img', { src:d.imgSrc, alt:d.label, style:{ width:48, height:48, borderRadius:10, objectFit:"cover" } }),
               R('div', null,
                 R('div', { style:{ fontWeight:700, fontSize:16, color:C.ink } }, d.label),
-                R('div', { style:{ fontSize:12, color:C.sub } }, d.count+" mother · "+d.splits+" commercial")
+                R('div', { style:{ fontSize:12, color:C.sub } }, d.count+" mother � "+d.splits+" commercial")
               )
             ),
             R('div', { style:{ background:C.paleBg, padding:"8px 12px", borderRadius:8, fontSize:12.5, fontWeight:700, color:C.navy } }, "Planned: "+(d.deptLakhs?d.deptLakhs+" Lakhs":"0 Lakhs")+(d.deptKg?" ("+d.deptKg+" kg)":"(0 kg)"))
@@ -211,8 +211,8 @@ function ManagerScreen(props) {
         R('img', { src:BRAND_LOGO, alt:"Danish Healthcare" }),
         R('div', { className:"print-header-title" },
           R('h1', null, "DANISH HEALTH CARE (P) LTD."),
-          R('p', null, "INDUSTRIAL AREA, UJJAIN (M.P.) · GMP CERTIFIED MANUFACTURING FACILITY"),
-          R('p', null, "OFFICIAL MOTHER BATCHES PROGRESSIVE YIELD REGISTER — Printed: "+new Date().toLocaleDateString("en-IN"))
+          R('p', null, "INDUSTRIAL AREA, UJJAIN (M.P.) � GMP CERTIFIED MANUFACTURING FACILITY"),
+          R('p', null, "OFFICIAL MOTHER BATCHES PROGRESSIVE YIELD REGISTER � Printed: "+new Date().toLocaleDateString("en-IN"))
         )
       ),
       R('div', { style:{ display:"flex", alignItems:"center", justifyContent:"space-between", borderBottom:"2px solid "+C.navy, paddingBottom:14, marginBottom:16 }, className:"no-print" },
@@ -250,16 +250,16 @@ function ManagerScreen(props) {
                 R('td', { style:{ padding:10, border:"1px solid "+C.line } }, fmtDate(mb.date)),
                 R('td', { style:{ padding:10, border:"1px solid "+C.line, fontWeight:700, color:C.navy } }, mb.id),
                 R('td', { style:{ padding:10, border:"1px solid "+C.line, textAlign:"left" } }, R('b', null, mb.genericName)),
-                R('td', { style:{ padding:10, border:"1px solid "+C.line } }, R('div', null, R('b', null, mb.plannedBatchWt?mb.plannedBatchWt+" kg":"—")), R('div', null, calc.plannedLakh+" lacs")),
-                R('td', { style:{ padding:10, border:"1px solid "+C.line } }, R('div', null, mb.granOutput?mb.granOutput+" kg":"—"), R('div', null, calc.granLakh+" lacs"), R('div', { style:{color:C.ok,fontWeight:700} }, "("+calc.granYield+"%)")),
-                R('td', { style:{ padding:10, border:"1px solid "+C.line } }, R('div', null, mb.compOutput?mb.compOutput+" kg":"—"), R('div', null, calc.compLakh+" lacs"), R('div', { style:{color:C.ok,fontWeight:700} }, "("+calc.compYield+"%)") ),
-                R('td', { style:{ padding:10, border:"1px solid "+C.line } }, calc.coat==="NA" ? "NA" : R(Fragment, null, R('div', null, mb.coatOutput?mb.coatOutput+" kg":"—"), R('div', null, calc.coatLakh+" lacs"), R('div', { style:{color:C.ok,fontWeight:700} }, "("+calc.coatYield+"%)"))),
-                R('td', { style:{ padding:10, border:"1px solid "+C.line } }, linkedCBs[0]?linkedCBs[0].productName+" ("+linkedCBs[0].batchNumber+")":"—"),
-                R('td', { style:{ padding:10, border:"1px solid "+C.line } }, linkedCBs[0]?lakhFromUnits(linkedCBs[0].unitsReceived)+" LACS":"—"),
-                R('td', { style:{ padding:10, border:"1px solid "+C.line } }, linkedCBs[0]?computeCB(linkedCBs[0],[mb]).pkgYield+"% ("+lakhFromUnits(linkedCBs[0].packedQty)+")":"—"),
-                R('td', { style:{ padding:10, border:"1px solid "+C.line } }, linkedCBs[0]?computeCB(linkedCBs[0],[mb]).dispatchYield+"% ("+lakhFromUnits(linkedCBs[0].dispatchQty)+")":"—"),
-                R('td', { style:{ padding:10, border:"1px solid "+C.line, fontWeight:700, color:C.ok, fontSize:13 } }, calc.finalYield?calc.finalYield+"%":"—"),
-                R('td', { style:{ padding:10, border:"1px solid "+C.line }, className:"no-print" }, R('button', { type:"button", className:"btn-nav btn-delete", style:{padding:"4px 8px",fontSize:11}, onClick:function(){ deleteMB(mb.id); } }, "??? Delete"))
+                R('td', { style:{ padding:10, border:"1px solid "+C.line } }, R('div', null, R('b', null, mb.plannedBatchWt?mb.plannedBatchWt+" kg":"�")), R('div', null, calc.plannedLakh+" lacs")),
+                R('td', { style:{ padding:10, border:"1px solid "+C.line } }, R('div', null, mb.granOutput?mb.granOutput+" kg":"�"), R('div', null, calc.granLakh+" lacs"), R('div', { style:{color:C.ok,fontWeight:700} }, "("+calc.granYield+"%)")),
+                R('td', { style:{ padding:10, border:"1px solid "+C.line } }, R('div', null, mb.compOutput?mb.compOutput+" kg":"�"), R('div', null, calc.compLakh+" lacs"), R('div', { style:{color:C.ok,fontWeight:700} }, "("+calc.compYield+"%)") ),
+                R('td', { style:{ padding:10, border:"1px solid "+C.line } }, calc.coat==="NA" ? "NA" : R(Fragment, null, R('div', null, mb.coatOutput?mb.coatOutput+" kg":"�"), R('div', null, calc.coatLakh+" lacs"), R('div', { style:{color:C.ok,fontWeight:700} }, "("+calc.coatYield+"%)"))),
+                R('td', { style:{ padding:10, border:"1px solid "+C.line } }, linkedCBs[0]?linkedCBs[0].productName+" ("+linkedCBs[0].batchNumber+")":"�"),
+                R('td', { style:{ padding:10, border:"1px solid "+C.line } }, linkedCBs[0]?lakhFromUnits(linkedCBs[0].unitsReceived)+" LACS":"�"),
+                R('td', { style:{ padding:10, border:"1px solid "+C.line } }, linkedCBs[0]?computeCB(linkedCBs[0],[mb]).pkgYield+"% ("+lakhFromUnits(linkedCBs[0].packedQty)+")":"�"),
+                R('td', { style:{ padding:10, border:"1px solid "+C.line } }, linkedCBs[0]?computeCB(linkedCBs[0],[mb]).dispatchYield+"% ("+lakhFromUnits(linkedCBs[0].dispatchQty)+")":"�"),
+                R('td', { style:{ padding:10, border:"1px solid "+C.line, fontWeight:700, color:C.ok, fontSize:13 } }, calc.finalYield?calc.finalYield+"%":"�"),
+                R('td', { style:{ padding:10, border:"1px solid "+C.line }, className:"no-print" }, R('button', { type:"button", className:"btn-nav btn-delete", style:{padding:"4px 8px",fontSize:11}, onClick:function(){ deleteMB(mb.id); } }, "🗑 Delete"))
               ) : linkedCBs.map(function(cb, idx) {
                 const cbCalc = computeCB(cb, [mb]), isLastSplit = idx===linkedCBs.length-1, brd = "1px solid "+C.line;
                 return R('tr', { key:cb.id, style:{ borderBottom:isLastSplit?"2px solid "+C.navy:"1.5px solid "+C.navy, background:idx%2===0?C.white:C.paleBg } },
@@ -267,18 +267,18 @@ function ManagerScreen(props) {
                     R('td', { rowSpan:linkedCBs.length, style:{padding:10,border:brd} }, fmtDate(mb.date)),
                     R('td', { rowSpan:linkedCBs.length, style:{padding:10,border:brd,fontWeight:700,color:C.navy} }, mb.id),
                     R('td', { rowSpan:linkedCBs.length, style:{padding:10,border:brd,textAlign:"left"} }, R('b', null, mb.genericName)),
-                    R('td', { rowSpan:linkedCBs.length, style:{padding:10,border:brd} }, R('div', null, R('b', null, mb.plannedBatchWt?mb.plannedBatchWt+" kg":"—")), R('div', null, calc.plannedLakh+" lacs")),
-                    R('td', { rowSpan:linkedCBs.length, style:{padding:10,border:brd} }, R('div', null, mb.granOutput?mb.granOutput+" kg":"—"), R('div', null, calc.granLakh+" lacs"), R('div', {style:{color:C.ok,fontWeight:700}}, "("+calc.granYield+"%)")),
-                    R('td', { rowSpan:linkedCBs.length, style:{padding:10,border:brd} }, R('div', null, mb.compOutput?mb.compOutput+" kg":"—"), R('div', null, calc.compLakh+" lacs"), R('div', {style:{color:C.ok,fontWeight:700}}, "("+calc.compYield+"%)")),
-                    R('td', { rowSpan:linkedCBs.length, style:{padding:10,border:brd} }, calc.coat==="NA"?"NA":R(Fragment, null, R('div', null, mb.coatOutput?mb.coatOutput+" kg":"—"), R('div', null, calc.coatLakh+" lacs"), R('div', {style:{color:C.ok,fontWeight:700}}, "("+calc.coatYield+"%)")))
+                    R('td', { rowSpan:linkedCBs.length, style:{padding:10,border:brd} }, R('div', null, R('b', null, mb.plannedBatchWt?mb.plannedBatchWt+" kg":"�")), R('div', null, calc.plannedLakh+" lacs")),
+                    R('td', { rowSpan:linkedCBs.length, style:{padding:10,border:brd} }, R('div', null, mb.granOutput?mb.granOutput+" kg":"�"), R('div', null, calc.granLakh+" lacs"), R('div', {style:{color:C.ok,fontWeight:700}}, "("+calc.granYield+"%)")),
+                    R('td', { rowSpan:linkedCBs.length, style:{padding:10,border:brd} }, R('div', null, mb.compOutput?mb.compOutput+" kg":"�"), R('div', null, calc.compLakh+" lacs"), R('div', {style:{color:C.ok,fontWeight:700}}, "("+calc.compYield+"%)")),
+                    R('td', { rowSpan:linkedCBs.length, style:{padding:10,border:brd} }, calc.coat==="NA"?"NA":R(Fragment, null, R('div', null, mb.coatOutput?mb.coatOutput+" kg":"�"), R('div', null, calc.coatLakh+" lacs"), R('div', {style:{color:C.ok,fontWeight:700}}, "("+calc.coatYield+"%)")))
                   ) : null,
                   R('td', { style:{padding:10,border:brd,fontWeight:700} }, cb.productName+" ("+cb.batchNumber+")"),
                   R('td', { style:{padding:10,border:brd} }, lakhFromUnits(cb.unitsReceived)+" LACS"),
                   R('td', { style:{padding:10,border:brd} }, cbCalc.pkgYield+"% ("+lakhFromUnits(cb.packedQty)+")"),
                   R('td', { style:{padding:10,border:brd} }, cbCalc.dispatchYield+"% ("+lakhFromUnits(cb.dispatchQty)+")"),
                   idx===0 ? R(Fragment, null,
-                    R('td', { rowSpan:linkedCBs.length, style:{padding:10,border:brd,fontWeight:700,color:C.ok,fontSize:13} }, calc.finalYield?calc.finalYield+"%":"—"),
-                    R('td', { rowSpan:linkedCBs.length, style:{padding:10,border:brd}, className:"no-print" }, R('button', { type:"button", className:"btn-nav btn-delete", style:{padding:"4px 8px",fontSize:11}, onClick:function(){ deleteMB(mb.id); } }, "??? Delete"))
+                    R('td', { rowSpan:linkedCBs.length, style:{padding:10,border:brd,fontWeight:700,color:C.ok,fontSize:13} }, calc.finalYield?calc.finalYield+"%":"�"),
+                    R('td', { rowSpan:linkedCBs.length, style:{padding:10,border:brd}, className:"no-print" }, R('button', { type:"button", className:"btn-nav btn-delete", style:{padding:"4px 8px",fontSize:11}, onClick:function(){ deleteMB(mb.id); } }, "🗑 Delete"))
                   ) : null
                 );
               }),
@@ -312,15 +312,15 @@ function ManagerScreen(props) {
         return R(Card, { key:cb.id, style:{ padding:20 } },
           R('div', { style:{ display:"flex", justifyContent:"space-between", alignItems:"flex-start", flexWrap:"wrap", gap:10 } },
             R('div', null,
-              R('div', { style:{ fontWeight:700, fontSize:16, color:C.navy, display:"flex", alignItems:"center", gap:10 } }, cb.id+" · "+cb.productName, R('span', { style:{ background:C.paleBg, border:"1px solid "+C.line, color:C.sub, fontSize:12, padding:"2px 8px", borderRadius:6 } }, "#"+cb.batchNumber)),
-              R('div', { style:{ fontSize:12.5, color:C.sub, marginTop:4 } }, "Linked Mother Batch: ", R('b', null, cb.mbId), " · Date: "+fmtDate(cb.date)+(cb.loggedBy?" · Officer: "+cb.loggedBy:""))
+              R('div', { style:{ fontWeight:700, fontSize:16, color:C.navy, display:"flex", alignItems:"center", gap:10 } }, cb.id+" � "+cb.productName, R('span', { style:{ background:C.paleBg, border:"1px solid "+C.line, color:C.sub, fontSize:12, padding:"2px 8px", borderRadius:6 } }, "#"+cb.batchNumber)),
+              R('div', { style:{ fontSize:12.5, color:C.sub, marginTop:4 } }, "Linked Mother Batch: ", R('b', null, cb.mbId), " � Date: "+fmtDate(cb.date)+(cb.loggedBy?" � Officer: "+cb.loggedBy:""))
             ),
-            R('button', { type:"button", className:"btn-nav btn-delete", style:{padding:"5px 10px",fontSize:12}, onClick:function(){ deleteCB(cb.id); } }, "??? Delete")
+            R('button', { type:"button", className:"btn-nav btn-delete", style:{padding:"5px 10px",fontSize:12}, onClick:function(){ deleteCB(cb.id); } }, "🗑 Delete")
           ),
           R('div', { style:{ display:"grid", gridTemplateColumns:"repeat(auto-fit, minmax(130px, 1fr))", gap:12, marginTop:16, fontSize:13 } },
-            R(Stat, { label:"Units Received", value:(calc.recvLakh?calc.recvLakh+" Lakhs":"—")+" ("+fmtNum(cb.unitsReceived)+")" }),
-            R(Stat, { label:"Units Packed", value:(calc.packedLakh?calc.packedLakh+" Lakhs":"—")+" ("+fmtNum(cb.packedQty)+")" }),
-            R(Stat, { label:"Units Dispatched", value:(calc.dispatchLakh?calc.dispatchLakh+" Lakhs":"—")+" ("+fmtNum(cb.dispatchQty)+")" }),
+            R(Stat, { label:"Units Received", value:(calc.recvLakh?calc.recvLakh+" Lakhs":"�")+" ("+fmtNum(cb.unitsReceived)+")" }),
+            R(Stat, { label:"Units Packed", value:(calc.packedLakh?calc.packedLakh+" Lakhs":"�")+" ("+fmtNum(cb.packedQty)+")" }),
+            R(Stat, { label:"Units Dispatched", value:(calc.dispatchLakh?calc.dispatchLakh+" Lakhs":"�")+" ("+fmtNum(cb.dispatchQty)+")" }),
             R(Stat, { label:"Rejected Units", value:fmtNum(cb.rejectedUnits||0) }),
             R(Stat, { label:"RR Retained for Future", value:fmtNum(cb.rrGeneratedUnits||0)+" units" }),
             R(Stat, { label:"Packaging Yield", value:R(YieldBadge, { value:calc.pkgYield }) }),
@@ -391,7 +391,7 @@ function App() {
       R('div', { style:{ fontSize:20, fontWeight:800, fontFamily:FONT_DISPLAY, letterSpacing:1 } }, "DANISH HEALTHCARE (P) LTD."),
       R('div', { style:{ fontSize:13, color:"rgba(255,255,255,0.75)", marginTop:6, letterSpacing:1.5, textTransform:"uppercase" } }, "Digital Production Yield Management System (DPYMS v2)"),
       R('div', { style:{ marginTop:24, padding:"8px 20px", borderRadius:999, background:"rgba(255,255,255,0.12)", border:"1px solid rgba(255,255,255,0.2)", fontSize:12.5, fontWeight:600, color:C.skyBlue, display:"flex", alignItems:"center", gap:10 } },
-        R('span', { className:"spinner-dot" }), " Initializing Multi-Device Cloud Persistence Engine…"
+        R('span', { className:"spinner-dot" }), " Initializing Multi-Device Cloud Persistence Engine�"
       )
     );
   }
@@ -408,9 +408,10 @@ function App() {
     role==="production" ? R(ProductionScreen, { dept:dept, userName:userName, setUserName:setUserName, motherBatches:motherBatches, setMotherBatches:setMotherBatches, commercialBatches:commercialBatches, setCommercialBatches:setCommercialBatches }) : null,
     role==="qa" ? R(QaScreen, { dept:dept, userName:userName, motherBatches:motherBatches, setMotherBatches:setMotherBatches, commercialBatches:commercialBatches }) : null,
     role==="packaging" ? R(PackagingScreen, { dept:dept, userName:userName, setUserName:setUserName, motherBatches:motherBatches, commercialBatches:commercialBatches, setCommercialBatches:setCommercialBatches }) : null,
-    R('div', { style:{ textAlign:"center", padding:"18px 16px 30px", fontSize:11, color:C.sub }, className:"no-print" }, "Danish Health Care (P) Ltd. · 76/27-29, Industrial Estate, Maxi Road, Ujjain 456010 · ISO 9001:2015 & WHO GMP Certified")
+    R('div', { style:{ textAlign:"center", padding:"18px 16px 30px", fontSize:11, color:C.sub }, className:"no-print" }, "Danish Health Care (P) Ltd. � 76/27-29, Industrial Estate, Maxi Road, Ujjain 456010 � ISO 9001:2015 & WHO GMP Certified")
   );
 }
+
 
 
 
