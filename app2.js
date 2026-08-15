@@ -5,7 +5,7 @@ var useState = React.useState, useEffect = React.useEffect, useMemo = React.useM
 function PackagingScreen(props) {
   const dept = props.dept, motherBatches = props.motherBatches, commercialBatches = props.commercialBatches;
   const d = (dept && DEPARTMENTS[dept]) || { label:"Plant-Wide", unit:"Units", imgSrc:DEFAULT_LOGO };
-  const deptMBs = dept ? motherBatches.filter(function(m){ return m.dept===dept && !m.isDeleted; }) : motherBatches.filter(function(m){ return !m.isDeleted; });
+  const deptMBs = dept ? motherBatches.filter(function(m){ return m.dept===dept && m.qaStatus!=='DELETED'; }) : motherBatches.filter(function(m){ return m.qaStatus!=='DELETED'; });
   const [mbId, setMbId] = useState(deptMBs[0] ? deptMBs[0].id : "");
   useEffect(function(){ if (!mbId && deptMBs[0]) setMbId(deptMBs[0].id); }, [deptMBs]); // eslint-disable-line
   const selectedMB = motherBatches.find(function(m){ return m.id===mbId; });
@@ -51,8 +51,8 @@ function PackagingScreen(props) {
     setSplitCount(1); setSplitRows([{productName:"",batchNumber:""}]); setDetails({}); setEditingCbId(null); setShowSplitSetup(true);
   };
   function editCB(cb){ setEditingCbId(cb.id); setMbId(cb.mbId); setDate(cb.date); setSplitCount(1); setSplitRows([{productName:cb.productName,batchNumber:cb.batchNumber}]); setDetails({0:{unitsReceived:cb.unitsReceived,packedQty:cb.packedQty,dispatchQty:cb.dispatchQty,rejectedUnits:cb.rejectedUnits,rrGeneratedUnits:cb.rrGeneratedUnits||"0"}}); setShowSplitSetup(false); window.scrollTo({top:0,behavior:"smooth"}); }
-  const deleteCB = async function(cbId){ if(!window.confirm("Delete Commercial Batch "+cbId+"?"))return; const updatedCBs=commercialBatches.map(function(c){return c.id===cbId?{...c,isDeleted:true}:c;}); props.setCommercialBatches(updatedCBs); await saveShared("dpyms_commercial_batches",updatedCBs); setToast("Commercial Batch "+cbId+" deleted"); };
-  const deptCBs = commercialBatches.filter(function(c){ return c.dept===dept && !c.isDeleted; });
+  const deleteCB = async function(cbId){ if(!window.confirm("Delete Commercial Batch "+cbId+"?"))return; const updatedCBs=commercialBatches.map(function(c){return c.id===cbId?{...c,batchNumber:'[DELETED] '+(c.batchNumber||'')}:c;}); props.setCommercialBatches(updatedCBs); await saveShared("dpyms_commercial_batches",updatedCBs); setToast("Commercial Batch "+cbId+" deleted"); };
+  const deptCBs = commercialBatches.filter(function(c){ return c.dept===dept && !(c.batchNumber||'').startsWith('[DELETED]'); });
   return R('div', { style:{ maxWidth:820, margin:"0 auto", padding:"20px 16px 60px" } },
     R(SectionHeading, { eyebrow:"Packaging · "+d.label, title:"Log Commercial Batches & Packaging Yields", sub:"Track Units Received, Packed, Dispatched & Yields (Syncs live across devices)." }),
     R(UniversalActionBar, { onSave:saveAll, onBack:function(){ setShowSplitSetup(true); setEditingCbId(null); } }),
@@ -128,10 +128,10 @@ function ManagerScreen(props) {
   const [deptFilter, setDeptFilter] = useState("all");
   const [search, setSearch] = useState("");
   const loadSamplePlantData = async function() { props.setMotherBatches(SAMPLE_MOTHER_BATCHES); props.setCommercialBatches(SAMPLE_COMMERCIAL_BATCHES); await saveShared("dpyms_mother_batches",SAMPLE_MOTHER_BATCHES); await saveShared("dpyms_commercial_batches",SAMPLE_COMMERCIAL_BATCHES); };
-  const deleteMB = async function(mbId) { if(!window.confirm("Delete Mother Batch "+mbId+"?"))return; const updatedMBs=motherBatches.map(function(m){return m.id===mbId?{...m,isDeleted:true}:m;}); const updatedCBs=commercialBatches.map(function(c){return c.mbId===mbId?{...c,isDeleted:true}:c;}); props.setMotherBatches(updatedMBs); props.setCommercialBatches(updatedCBs); await saveShared("dpyms_mother_batches",updatedMBs); await saveShared("dpyms_commercial_batches",updatedCBs); };
-  const deleteCB = async function(cbId) { if(!window.confirm("Delete Commercial Batch "+cbId+"?"))return; const updatedCBs=commercialBatches.map(function(c){return c.id===cbId?{...c,isDeleted:true}:c;}); props.setCommercialBatches(updatedCBs); await saveShared("dpyms_commercial_batches",updatedCBs); };
-  const filteredMBs = deptFilter==="all" ? motherBatches.filter(function(m){return !m.isDeleted;}) : motherBatches.filter(function(m){return m.dept===deptFilter && !m.isDeleted;});
-  const filteredCBs = deptFilter==="all" ? commercialBatches.filter(function(c){return !c.isDeleted;}) : commercialBatches.filter(function(c){return c.dept===deptFilter && !c.isDeleted;});
+  const deleteMB = async function(mbId) { if(!window.confirm("Delete Mother Batch "+mbId+"?"))return; const updatedMBs=motherBatches.map(function(m){return m.id===mbId?{...m,qaStatus:'DELETED'}:m;}); const updatedCBs=commercialBatches.map(function(c){return c.mbId===mbId?{...c,batchNumber:'[DELETED] '+(c.batchNumber||'')}:c;}); props.setMotherBatches(updatedMBs); props.setCommercialBatches(updatedCBs); await saveShared("dpyms_mother_batches",updatedMBs); await saveShared("dpyms_commercial_batches",updatedCBs); };
+  const deleteCB = async function(cbId) { if(!window.confirm("Delete Commercial Batch "+cbId+"?"))return; const updatedCBs=commercialBatches.map(function(c){return c.id===cbId?{...c,batchNumber:'[DELETED] '+(c.batchNumber||'')}:c;}); props.setCommercialBatches(updatedCBs); await saveShared("dpyms_commercial_batches",updatedCBs); };
+  const filteredMBs = deptFilter==="all" ? motherBatches.filter(function(m){return m.qaStatus!=='DELETED';}) : motherBatches.filter(function(m){return m.dept===deptFilter && m.qaStatus!=='DELETED';});
+  const filteredCBs = deptFilter==="all" ? commercialBatches.filter(function(c){return !(c.batchNumber||'').startsWith('[DELETED]');}) : commercialBatches.filter(function(c){return c.dept===deptFilter && !(c.batchNumber||'').startsWith('[DELETED]');});
   const mbRows = filteredMBs.map(function(mb){ return {mb,calc:computeMB(mb,commercialBatches),linkedCBs:commercialBatches.filter(function(c){return c.mbId===mb.id;})}; }).filter(function(row){ if(!search) return true; const s=search.toLowerCase(); return row.mb.id.toLowerCase().includes(s)||(row.mb.genericName||"").toLowerCase().includes(s); });
   const cbRows = filteredCBs.map(function(cb){ return {cb,calc:computeCB(cb,motherBatches)}; });
   const totals = useMemo(function() {
@@ -206,7 +206,7 @@ function ManagerScreen(props) {
     R(Card, { style:{ padding:16, marginBottom:20 }, className:"no-print" },
       R(Field, { label:"Search Register / Batches" }, R(TextInput, { placeholder:"Search MB ID, Generic Name, Brand...", value:search, onChange:function(e){ setSearch(e.target.value); } }))
     ),
-    activeTab==="deleted" ? R('div', { style:{ padding: 20, background: '#fee2e2', borderRadius: 8 } }, R('h3', {style:{color:'#991b1b'}}, 'Recently Deleted Batches (Soft Delete)'), R('p', null, 'These batches are hidden from production but securely preserved in the cloud database for compliance.')) : activeTab==="mother" ? R('div', { style:{ background:C.white, borderRadius:16, border:"1px solid "+C.line, padding:24, overflowX:"auto" } },
+    activeTab==="deleted" ? R('div', { style:{ background:C.white, borderRadius:16, border:'1px solid '+C.line, padding:24 } }, R('h3', {style:{color:C.red, marginTop:0}}, 'Recently Deleted Batches'), R('table', { className:'gmp-table' }, R('thead', null, R('tr', null, R('th',null,'ID'), R('th',null,'Type'), R('th',null,'Date'))), R('tbody', null, motherBatches.filter(m=>m.qaStatus==='DELETED').map(m=>R('tr',{key:m.id},R('td',null,m.id),R('td',null,'Mother Batch'),R('td',null,m.date))), commercialBatches.filter(c=>(c.batchNumber||'').startsWith('[DELETED]')).map(c=>R('tr',{key:c.id},R('td',null,c.id),R('td',null,'Commercial Batch'),R('td',null,c.date))) ))) : activeTab==="mother" ? R('div', { style:{ background:C.white, borderRadius:16, border:"1px solid "+C.line, padding:24, overflowX:"auto" } },
       R('div', { className:"print-header print-only" },
         R('img', { src:BRAND_LOGO, alt:"Danish Healthcare" }),
         R('div', { className:"print-header-title" },
@@ -411,6 +411,8 @@ function App() {
     R('div', { style:{ textAlign:"center", padding:"18px 16px 30px", fontSize:11, color:C.sub }, className:"no-print" }, "Danish Health Care (P) Ltd. · 76/27-29, Industrial Estate, Maxi Road, Ujjain 456010 · ISO 9001:2015 & WHO GMP Certified")
   );
 }
+
+
 
 
 
